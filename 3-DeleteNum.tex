@@ -1,0 +1,41 @@
+﻿\documentclass{article}
+\usepackage{CJK}
+\usepackage{graphicx}
+
+\begin{document}
+\begin{CJK*}{GBK}{song}
+\title{算法与算法复杂性理论\\ 第二次编程作业：删数}
+\maketitle
+
+\section{算法介绍}
+\qquad 将这个n位数记为$a_1a_2...a_n$，现在要删掉其中k位，同时得到最大的结果。
+
+首先考虑k=1的情形。删掉1位之后的数是n-1位，从最高位依次向下考虑：最高位一定是$a_1,a_2$两个中的一个，因此如果$a_1<a_2$那么一定要删除$a_1$才可以得到可能的最大值，此时删数完成；如果$a_1>=a_2$那么不能删除$a_1,a_2$，所以要考虑第二个最高位，而这个位置的情形和最高位是一模一样的，一直循环下去。如果到最后一位依旧没有出现$a_i<a_{i+1}$的情况，例如54321 或者22222，那么就删掉最后一位。由于数位有限，所以程序必然结束。
+
+有了k=1的基础，可以考虑$k>1$的情形。这是一个符合贪心算法要求的过程，任何一个删k个数的方案都可以对删除的数字进行从高位到低位的排序，其中最靠近高位的那个数字一定和k＝1的删除结果是一样的，否则不可能得到最大值；第二个最靠近高位的数字也符合类似规律。所以程序可以反复执行k＝1的删数过程，并将删数之后的结果作为输入传到下一轮的程序中，一共执行k轮。
+
+
+
+\section{程序结构}
+\qquad 将数字直接存储为长度为100000的数组（输入数据中没有n的大小，所以直接用n的最大值分配空间），用-2标记数字的结束，用-1标记某位被删除。
+
+int getNext(int data[], int thisOne)函数用来返回第thisOne元素的下一个未被删除元素的值，如果thisOne元素是末尾元素，那么返回10，这样一定可以在deleteNum函数中把thisOne删掉，也就是删除末尾。
+
+void deleteNum(int data[], int index)函数用来判断第index位是否需要删除，若需要则把元素改记为-1，删除的条件就是该元素比下一个未被删除元素小。
+
+void solution(int \&K, int data[])函数用来读取一个n位整数以及k，之后调用k次deleteNum函数。并将结果打印出来。
+
+
+
+\section{实验结果}
+\qquad 在作业系统中运行结果如下：
+
+\begin{center}
+\begin{figure}[ht]
+\scalebox{0.28}{\includegraphics[]{Result.png}}
+\end{figure}
+\end{center}
+
+
+\end{CJK*}
+\end{document}

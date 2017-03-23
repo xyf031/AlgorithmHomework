@@ -1,0 +1,41 @@
+﻿\documentclass{article}
+\usepackage{CJK}
+\usepackage{graphicx}
+
+\begin{document}
+\begin{CJK*}{GBK}{song}
+\title{算法与算法复杂性理论\\ 第一次编程作业}
+\author{Haha}
+\maketitle
+
+\section{算法介绍}
+\qquad 算法中包含两个对点集进行操作的关键函数：getMinimal()和getCross()，它们的作用如下。
+
+\begin{description}
+\item[getMinimal():] 输入一个含n个顶点的图G以及G的一个覆盖顶点集C，如果C中没有可移除的顶点（在不破坏覆盖性的前提下移除），那么返回C。如果C中有可移除的顶点，那么对这些可移除顶点进行估计：移除该顶点后的新点集中，可移除顶点数目大小。取该数目最大的顶点，将其移除，这就是“最快速度”的含义。将移除后的新覆盖顶点集再输入进本程序递归，直到没有可移除顶点为止。这样我们得到了一个“极小”覆盖顶点集。
+
+\item[getCross():] 输入一个含n个顶点的图G以及G的一个极小覆盖顶点集C，寻找C中是否有这样的顶点v：在与v直接相邻的顶点中，有且只有一个顶点不在C中。如果没有这样的v，那么返回G；如果有，那么任取一个，将它与那个不在C中的相邻顶点互换，再带入到getMinimal()中用最快速度缩减到极小覆盖顶点集。这样我们得到了很多的新的覆盖顶点集。
+
+\end{description}
+
+基于这两个函数，算法从包含所有顶点的全集开始，以“最快速度”缩减顶点集合，该循环过程中（Part 1）不断检测是否已经达到k的要求，一旦发现就输出结果并终止程序。如果这种寻找过程未能找到不大于k的覆盖点集，那么就进行第二轮的搜索（Part 2）。具体过程如下：
+
+\begin{itemize}
+\item \textbf{Part 1} For i = 1,2,...,n:\\ 1、生成$C_i=V-\{i\}$\\ 2、对$C_i$执行getMinimal()函数\\ 3、For r=1,2,...n-k重复执行getCross()函数r遍\\ 4、 将过程中得到的$C_i$都加入到覆盖点集集合covers中
+
+\item \textbf{Part 2} 对于Part 1中得到的covers集合中的任何一对集合$C_i,C_j$而言：\\ 1、合并两个集合得到$C_{i,j}=C_i\cup C_j$\\ 2、对$C_{i,j}$执行getMinimal()函数\\ 3、For r=1,2,...n-k重复执行getCross()函数r遍
+
+\end{itemize}
+
+\section{运行效果}
+\qquad 在作业系统中运行结果如下：
+
+\begin{center}
+\begin{figure}[ht]
+\scalebox{0.23}{\includegraphics[]{TestResult.png}}
+\end{figure}
+\end{center}
+
+
+\end{CJK*}
+\end{document}
